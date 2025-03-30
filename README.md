@@ -38,8 +38,8 @@ pip
 
 1. Clone the repo
 
-git clone https://github.com/PeroroncinoZ/RecipeGram.git
-cd smartportion
+git clone https://github.com/PeroroncinoZ/RecipeGram.git, and then type
+cd smartportion in the powershell command prompt
 
 2. Install dependencies
 
@@ -67,7 +67,7 @@ Tools: Jinja, Werkzeug, JSON
 To access the admin panel, log in with:
 
 School ID: admin
-Password: adminpassword (or whatever you configured)
+Password: Skibidi1120$ (or whatever you configured)
 
 You can reset recipes, set weekly ingredients, and manage users from /admin.
 
