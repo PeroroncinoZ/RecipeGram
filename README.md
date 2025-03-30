@@ -1,10 +1,10 @@
-📦 SmartPortion
+📦 RecipeGram
 
 Helping schools reduce cafeteria food waste with student-powered recipe voting.
 
-🍽️ What is SmartPortion?
+🍽️ What is RecipeGram?
 
-SmartPortion is a web app that empowers students to vote on school meal recipes using weekly USDA-required ingredients. It helps reduce cafeteria food waste by making meals more appealing and student-approved. Built for school communities to create, vote, and improve school lunches together.
+RecipeGram is a web app that empowers students to vote on school meal recipes using weekly USDA-required ingredients. It helps reduce cafeteria food waste by making meals more appealing and student-approved. Built for school communities to create, vote, and improve school lunches together. BITE, (Better Ingredients, Trash Eliminated) is a non-profit dedicated to reducing food waste.
 
 💡 Features
 
@@ -38,8 +38,8 @@ pip
 
 1. Clone the repo
 
-git clone https://github.com/PeroroncinoZ/RecipeGram.git
-cd smartportion
+git clone https://github.com/PeroroncinoZ/RecipeGram.git, and then type
+cd smartportion in the powershell command prompt
 
 2. Install dependencies
 
@@ -67,7 +67,7 @@ Tools: Jinja, Werkzeug, JSON
 To access the admin panel, log in with:
 
 School ID: admin
-Password: adminpassword (or whatever you configured)
+Password: Skibidi1120$ (or whatever you configured)
 
 You can reset recipes, set weekly ingredients, and manage users from /admin.
 
