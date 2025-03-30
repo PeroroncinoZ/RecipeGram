@@ -1,10 +1,10 @@
-📦 SmartPortion
+📦 RecipeGram
 
 Helping schools reduce cafeteria food waste with student-powered recipe voting.
 
-🍽️ What is SmartPortion?
+🍽️ What is RecipeGram?
 
-SmartPortion is a web app that empowers students to vote on school meal recipes using weekly USDA-required ingredients. It helps reduce cafeteria food waste by making meals more appealing and student-approved. Built for school communities to create, vote, and improve school lunches together.
+RecipeGram is a web app that empowers students to vote on school meal recipes using weekly USDA-required ingredients. It helps reduce cafeteria food waste by making meals more appealing and student-approved. Built for school communities to create, vote, and improve school lunches together. BITE, (Better Ingredients, Trash Eliminated) is a non-profit dedicated to reducing food waste.
 
 💡 Features
 
