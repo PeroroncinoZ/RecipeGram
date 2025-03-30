@@ -38,7 +38,7 @@ pip
 
 1. Clone the repo
 
-git clone https://github.com/FWT-bs/smartportion.git
+git clone https://github.com/PeroroncinoZ/RecipeGram.git
 cd smartportion
 
 2. Install dependencies
@@ -50,17 +50,6 @@ pip install -r requirements.txt
 python app.py
 
 Go to http://127.0.0.1:5000 in your browser.
-
-🖼️ Screenshots
-
-Submit Page
-
-Vote Page
-
-Admin Panel
-
-
-
 
 
 
@@ -82,27 +71,13 @@ Password: adminpassword (or whatever you configured)
 
 You can reset recipes, set weekly ingredients, and manage users from /admin.
 
-📁 File Structure
-
-smartportion/
-├── static/
-│   ├── uploads/              # Uploaded recipe + ingredient images
-│   └── dist/output.css       # Tailwind output
-├── templates/                # HTML templates
-├── app.py                    # Main Flask app
-├── image_utils.py            # Handles ingredient image downloads
-├── weekly_ingredients.json   # Saved weekly ingredient list
-└── README.md                 # You're here
 
 🧠 Inspiration
 
 Inspired by USDA food waste reports and student surveys, SmartPortion gives students a voice in school lunch decisions. By letting them vote on recipes made with required ingredients, schools can cut waste and improve satisfaction.
 
-📣 Future Improvements
 
 
 
-📜 License
 
-MIT License. Feel free to fork, remix, and build on this!
 
