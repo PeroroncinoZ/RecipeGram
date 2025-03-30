@@ -267,12 +267,17 @@ def results():
         data = c.fetchall()
 
     total_votes = sum([row['votes'] for row in data]) or 1
-    proportions = [{
-        'title': row['title'],
-        'votes': row['votes'],
-        'percent': round((row['votes'] / total_votes) * 100, 1)
-    } for row in data]
+    proportions = sorted([
+        {
+            'title': row['title'],
+            'votes': row['votes'],
+            'percent': round((row['votes'] / total_votes) * 100, 1)
+        }
+        for row in data
+    ], key=lambda x: x['votes'], reverse=True)
+
     return render_template('results.html', proportions=proportions)
+
 @app.route('/feedback', methods=['GET', 'POST'])
 def feedback():
     if request.method == 'POST':
