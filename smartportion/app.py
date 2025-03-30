@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, flash, url_for
 import sqlite3
 from collections import defaultdict
 import os
 from werkzeug.utils import secure_filename
 import json
+
 
 app = Flask(__name__)
 DB_NAME = 'recipes.db'
@@ -27,35 +28,52 @@ def init_db():
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
 
+def load_weekly_ingredients():
+    try:
+        with open('weekly_ingredients.json') as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
+
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return (
+        '.' in filename and 
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    )
+
 
 @app.route('/')
 def index():
-    ingredients = ["Apples", "Carrots", "Bananas", "Spinach", "Strawberries"]
+    ingredients = load_weekly_ingredients()
     return render_template('index.html', ingredients=ingredients)
 
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
-    ingredients = ["Apples", "Carrots", "Bananas", "Spinach", "Strawberries"]
+    ingredients = load_weekly_ingredients()
 
     if request.method == 'POST':
-        title = request.form['title']
+        title = request.form.get('title', '')
         selected_ingredients = request.form.getlist('ingredients')
-        ingredients_str = ', '.join(selected_ingredients)
-        instructions = request.form['instructions']
-        file = request.files['photo']
+        instructions = request.form.get('instructions', '')
+        file = request.files.get('photo')
 
-        # Validate file upload
+        # Validate file presence
         if not file or file.filename == '':
             flash("❌ No file uploaded.")
-            return redirect(url_for('submit'))
+            return render_template('submit.html',
+                                   ingredients=ingredients,
+                                   title=title,
+                                   selected_ingredients=selected_ingredients,
+                                   instructions=instructions)
 
         filename = secure_filename(file.filename)
-        ext = filename.rsplit('.', 1)[1].lower()
-        if ext not in {'jpg', 'jpeg', 'png'}:
+        if not allowed_file(filename):
             flash("❌ Only .jpg, .jpeg, or .png files are allowed.")
-            return redirect(url_for('submit'))
+            return render_template('submit.html',
+                                   ingredients=ingredients,
+                                   title=title,
+                                   selected_ingredients=selected_ingredients,
+                                   instructions=instructions)
 
         # Save file
         filepath = os.path.join('static/uploads', filename)
@@ -67,26 +85,37 @@ def submit():
             try:
                 c.execute("ALTER TABLE recipes ADD COLUMN image TEXT")
             except sqlite3.OperationalError:
-                pass  # already added
+                pass
 
             c.execute('''
                 INSERT INTO recipes (title, ingredients, instructions, image)
                 VALUES (?, ?, ?, ?)
-            ''', (title, ingredients_str, instructions, filename))
+            ''', (title, ', '.join(selected_ingredients), instructions, filename))
             conn.commit()
 
-        return redirect('/vote')
+        flash("✅ Recipe submitted successfully!")
+        return redirect(url_for('vote'))
 
     return render_template('submit.html', ingredients=ingredients)
 
 @app.route('/vote', methods=['GET'])
 def vote():
     with sqlite3.connect(DB_NAME) as conn:
-        conn.row_factory = sqlite3.Row  # <-- enables dict-style access
+        conn.row_factory = sqlite3.Row  # enable dict-style access
         c = conn.cursor()
-        c.execute('SELECT id, title, ingredients, instructions, votes FROM recipes')
-        recipes = c.fetchall()
+        c.execute('SELECT id, title, ingredients, instructions, votes, image FROM recipes')
+        rows = c.fetchall()
+
+        # Convert each row to a dict and fix ingredients
+        recipes = []
+        for row in rows:
+            recipe = dict(row)
+            recipe['ingredients'] = [i.strip() for i in recipe['ingredients'].split(',')]
+            recipes.append(recipe)
+
     return render_template('vote.html', recipes=recipes)
+
+
 
 @app.route('/vote/<int:recipe_id>', methods=['POST'])
 def vote_recipe(recipe_id):

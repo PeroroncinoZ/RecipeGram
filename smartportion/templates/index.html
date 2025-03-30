@@ -49,12 +49,15 @@
   <section class="max-w-6xl mx-auto px-6 py-16">
     <h2 class="text-3xl font-bold text-center mb-10">🧺 Ingredients of the Week</h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-      {% set example_ingredients = [
-        { 'name': 'Oranges', 'image': 'orange.jpg' },
-        { 'name': 'Broccoli', 'image': 'broccoli.jpg' },
-        { 'name': 'Strawberries', 'image': 'strawberry.jpg' },
-        { 'name': 'Spinach', 'image': 'spinach.jpg' }
-      ] %}
+      {% for ingredient in ingredients %}
+  <div class="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition">
+    <img src="/static/uploads/{{ ingredient | lower }}.jpg" alt="{{ ingredient }}" class="w-full h-40 object-cover">
+    <div class="p-4 text-center">
+      <h3 class="text-lg font-semibold text-white">{{ ingredient }}</h3>
+    </div>
+  </div>
+{% endfor %}
+
 
       {% for ingredient in example_ingredients %}
       <div class="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition">
