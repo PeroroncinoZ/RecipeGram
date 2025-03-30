@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Feedback Submissions – Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap');
+    body { font-family: 'Figtree', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-950 text-white font-sans">
+
+  {% include 'navbar.html' %}
+
+  <section class="max-w-5xl mx-auto px-6 py-16">
+    <h1 class="text-4xl font-bold text-center mb-10">📄 Student Feedback Submissions</h1>
+
+    {% if feedback %}
+    <div class="space-y-6">
+      {% for f in feedback %}
+      <div class="bg-white/10 border border-white/10 p-6 rounded-xl shadow-md">
+        <p><strong>Name:</strong> {{ f['student_name'] }}</p>
+        <p><strong>Hunger Level:</strong> {{ f['hunger_level'] }}</p>
+        <p><strong>Portion Eaten:</strong> {{ f['portion_choice'] }}</p>
+        <p><strong>Feedback:</strong> {{ f['feedback'] or 'N/A' }}</p>
+        <p class="text-sm text-gray-400"><strong>Date:</strong> {{ f['submission_date'] }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+      <p class="text-center text-gray-400">No feedback submitted yet.</p>
+    {% endif %}
+  </section>
+
+</body>
+</html>

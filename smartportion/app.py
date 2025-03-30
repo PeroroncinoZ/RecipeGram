@@ -7,7 +7,7 @@ from collections import defaultdict
 import os
 from werkzeug.utils import secure_filename
 import json
-
+import datetime
 
 
 app = Flask(__name__)
@@ -396,6 +396,20 @@ def logout():
     session.clear()
     flash("✅ You have been logged out.")
     return redirect(url_for('login'))
+@app.route('/view_feedback')
+def view_feedback():
+    if session.get('school_id') != 'admin':
+        flash("❌ Admin access only.")
+        return redirect(url_for('index'))
+
+    with sqlite3.connect('portion.db') as conn:
+        conn.row_factory = sqlite3.Row
+        c = conn.cursor()
+        c.execute('SELECT * FROM feedback ORDER BY submission_date DESC')
+        feedback_entries = c.fetchall()
+
+    return render_template('view_feedback.html', feedback=feedback_entries)
+
 
 # ---------- MAIN ----------
 if __name__ == '__main__':
