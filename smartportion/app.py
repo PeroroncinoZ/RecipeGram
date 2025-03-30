@@ -1,5 +1,6 @@
+# This Flask app powers BITE – a platform that lets students vote on and submit recipes,
+# aiming to reduce school cafeteria food waste.
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-from image_utils import download_image_for_ingredient
 import requests
 import sqlite3
 from collections import defaultdict
@@ -15,7 +16,10 @@ app.secret_key = 'supersecretkey'
 # ---------- DATABASE SETUP ----------
 UPLOAD_FOLDER = 'static/uploads'
 
-
+# Initialize the SQLite database and ensure required tables exist:
+# - recipes: stores student-submitted recipes
+# - users: stores school ID logins
+# - votes: stores recipe likes (one per user per recipe)
 def init_db():
     with sqlite3.connect(DB_NAME) as conn:
         c = conn.cursor()
@@ -157,7 +161,8 @@ def index():
 
 
 
-
+# Handles both displaying the recipe submission form and processing recipe uploads.
+# Requires login. Saves uploaded images and recipe info to the database.
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
     ingredients = load_weekly_ingredients()
@@ -221,7 +226,8 @@ def submit():
         return redirect(url_for('vote'))
 
     return render_template('submit.html', ingredients=ingredients)
-
+# Displays all recipes for logged-in users to vote on.
+# Recipes are marked if the user has already liked them.
 @app.route('/vote', methods=['GET'])
 def vote():
     if 'user_id' not in session:
@@ -258,6 +264,8 @@ def vote_recipe(recipe_id):
         conn.commit()
     return redirect('/vote')
 
+# Displays a sorted leaderboard of recipes by number of votes.
+# Useful for admins to see which meals students prefer.
 @app.route('/results')
 def results():
     with sqlite3.connect(DB_NAME) as conn:
@@ -350,6 +358,8 @@ def set_ingredients():
     flash("✅ Ingredients and images updated successfully.")
     return redirect('/admin')
 
+# AJAX-based toggle for liking or unliking a recipe.
+# Updates vote count dynamically.
 @app.route('/vote/<int:recipe_id>/like', methods=['POST'])
 def vote_recipe_ajax(recipe_id):
     if 'user_id' not in session:
