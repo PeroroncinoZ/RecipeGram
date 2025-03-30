@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RecipeGram – Meal Feedback</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='dist/output.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap');
+    body { font-family: 'Figtree', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-950 text-white">
+
+  <!-- Navbar -->
+  <nav class="bg-gradient-to-r from-indigo-900 via-purple-800 to-blue-700 p-4 shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <a href="{{ url_for('index') }}" class="text-white text-2xl font-bold">RecipeGram</a>
+      <ul class="flex space-x-6 text-white text-sm font-medium">
+        <li><a href="{{ url_for('index') }}" class="hover:underline">Home</a></li>
+        <li><a href="{{ url_for('submit') }}" class="hover:underline">Submit</a></li>
+        <li><a href="{{ url_for('vote') }}" class="hover:underline">Vote</a></li>
+        <li><a href="{{ url_for('results') }}" class="hover:underline">Results</a></li>
+        <li><a href="{{ url_for('feedback') }}" class="underline font-semibold">Feedback</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Feedback Form -->
+  <section class="max-w-2xl mx-auto px-6 py-16">
+    <h2 class="text-4xl font-bold text-center mb-8">🍽️ Meal Feedback</h2>
+    <form action="{{ url_for('feedback') }}" method="POST" class="space-y-6 bg-white/10 backdrop-blur-md p-8 rounded-xl shadow-lg border border-white/10">
+
+      <div>
+        <label for="student_name" class="block mb-2 font-semibold">Your Name</label>
+        <input type="text" id="student_name" name="student_name" required class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white">
+      </div>
+
+      <div>
+        <label class="block mb-2 font-semibold">How hungry were you before eating?</label>
+        <select name="hunger_level" required class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white">
+          <option value="Very Hungry">Very Hungry</option>
+          <option value="Somewhat Hungry">Somewhat Hungry</option>
+          <option value="Not Hungry">Not Hungry</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block mb-2 font-semibold">How much of your meal did you eat?</label>
+        <select name="portion_choice" required class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white">
+          <option value="All of it">All of it</option>
+          <option value="Most of it">Most of it</option>
+          <option value="Half">Half</option>
+          <option value="Didn’t Eat">Didn’t Eat</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="feedback" class="block mb-2 font-semibold">Anything else you want to tell us?</label>
+        <textarea id="feedback" name="feedback" rows="4" class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white"></textarea>
+      </div>
+
+      <button type="submit" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-semibold py-3 rounded-lg shadow-lg transition">
+        Submit Feedback
+      </button>
+    </form>
+  </section>
+
+</body>
+</html>
