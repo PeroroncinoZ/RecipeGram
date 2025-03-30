@@ -14,18 +14,8 @@
 <body class="bg-gray-950 text-white">
 
   <!-- Navbar -->
-  <nav class="bg-gradient-to-r from-indigo-900 via-purple-800 to-blue-700 p-4 shadow-md sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
-      <a href="{{ url_for('index') }}" class="text-white text-2xl font-bold">RecipeGram</a>
-      <ul class="flex space-x-6 text-white text-sm font-medium">
-        <li><a href="{{ url_for('index') }}" class="hover:underline">Home</a></li>
-        <li><a href="{{ url_for('submit') }}" class="hover:underline">Submit</a></li>
-        <li><a href="{{ url_for('vote') }}" class="hover:underline">Vote</a></li>
-        <li><a href="{{ url_for('results') }}" class="hover:underline">Results</a></li>
-        <li><a href="{{ url_for('feedback') }}" class="underline font-semibold">Feedback</a></li>
-      </ul>
-    </div>
-  </nav>
+  {% include 'navbar.html' %}
+
 
   <!-- Feedback Form -->
   <section class="max-w-2xl mx-auto px-6 py-16">

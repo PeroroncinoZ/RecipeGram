@@ -1,0 +1,26 @@
+<nav class="bg-gradient-to-r from-indigo-900 via-purple-800 to-blue-700 p-4 shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <a href="{{ url_for('index') }}" class="text-white text-2xl font-bold">RecipeGram</a>
+  
+      <ul class="flex space-x-6 text-white text-sm font-medium">
+        <li><a href="{{ url_for('index') }}" class="hover:underline">Home</a></li>
+        <li><a href="{{ url_for('submit') }}" class="hover:underline">Submit</a></li>
+        <li><a href="{{ url_for('vote') }}" class="hover:underline">Vote</a></li>
+        <li><a href="{{ url_for('results') }}" class="hover:underline">Results</a></li>
+        <li><a href="{{ url_for('feedback') }}" class="hover:underline">Feedback</a></li>
+  
+        {% if session.get('user_id') %}
+        {% if session.get('school_id') == 'admin' %}
+          <li><a href="{{ url_for('admin') }}" class="text-yellow-300 hover:underline font-semibold">🛠️ Admin</a></li>
+        {% endif %}
+        <li class="text-green-300">👤 {{ session.get('school_id') }}</li>
+        <li><a href="{{ url_for('logout') }}" class="hover:underline">Logout</a></li>
+      {% else %}
+        <li><a href="{{ url_for('login') }}" class="hover:underline">Login</a></li>
+      {% endif %}
+      
+      </ul>
+    </div>
+  </nav>
+
+  

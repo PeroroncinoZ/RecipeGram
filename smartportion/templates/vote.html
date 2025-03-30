@@ -14,18 +14,8 @@
 <body class="bg-gray-950 text-white">
 
   <!-- Navbar -->
-  <nav class="bg-gradient-to-r from-indigo-900 via-purple-800 to-blue-700 p-4 shadow-md sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto flex justify-between items-center">
-      <a href="{{ url_for('index') }}" class="text-white text-2xl font-bold">RecipeGram</a>
-      <ul class="flex space-x-6 text-white text-sm font-medium">
-        <li><a href="{{ url_for('index') }}" class="hover:underline">Home</a></li>
-        <li><a href="{{ url_for('submit') }}" class="hover:underline">Submit</a></li>
-        <li><a href="{{ url_for('vote') }}" class="underline font-semibold">Vote</a></li>
-        <li><a href="{{ url_for('results') }}" class="hover:underline">Results</a></li>
-        <li><a href="{{ url_for('feedback') }}" class="hover:underline underline-offset-2 font-semibold">Feedback</a></li>
-      </ul>
-    </div>
-  </nav>
+  {% include 'navbar.html' %}
+
 
   <!-- Vote Section -->
   <section class="max-w-5xl mx-auto px-6 py-16">
@@ -35,9 +25,11 @@
       <div class="space-y-10">
         {% for recipe in recipes|sort(attribute='votes', reverse=True) %}
         <div class="bg-white/10 border border-white/10 rounded-xl shadow-lg overflow-hidden">
-          <img src="{{ url_for('static', filename='uploads/' + (recipe['image'] if recipe['image'] else 'default.jpg')) }}"
-     alt="{{ recipe['title'] }}"
-     class="w-full h-60 object-cover rounded-t-lg">
+          <img src="/static/uploads/{{ recipe.image }}"
+     alt="{{ recipe.title }}"
+     class="w-full h-auto object-cover rounded-t-xl"
+     onerror="this.src='/static/uploads/default.jpg';">
+
 
 
 
@@ -50,9 +42,10 @@
             <!-- REMOVE the <form> entirely -->
               <div class="flex items-center gap-4">
                 <button data-id="{{ recipe.id }}"
-                        class="like-button bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition">
-                  ❤️ Like
-                </button>
+        class="like-button {{ 'bg-red-600 hover:bg-red-700' if recipe.liked_by_user else 'bg-gray-600' }} text-white px-4 py-2 rounded-lg font-semibold transition">
+  {{ '❤️ Liked' if recipe.liked_by_user else '🤍 Like' }}
+</button>
+
                 <span id="votes-{{ recipe.id }}" class="text-sm text-gray-400">
                   {{ recipe.votes }} like{{ 's' if recipe.votes != 1 }}
                 </span>
@@ -85,17 +78,26 @@
         const data = await res.json();
 
         if (data.success) {
+          // Update vote count
           const likeDisplay = document.getElementById(`votes-${recipeId}`);
-          if (likeDisplay) {
-            likeDisplay.textContent = `${data.votes} like${data.votes !== 1 ? 's' : ''}`;
+          likeDisplay.textContent = `${data.votes} like${data.votes !== 1 ? 's' : ''}`;
+
+          // Update button appearance
+          if (data.liked) {
+            button.classList.remove('bg-gray-600');
+            button.classList.add('bg-red-600', 'hover:bg-red-700');
+            button.textContent = '❤️ Liked';
           } else {
-            console.error(`Could not find span with id votes-${recipeId}`);
+            button.classList.remove('bg-red-600', 'hover:bg-red-700');
+            button.classList.add('bg-gray-600');
+            button.textContent = '🤍 Like';
           }
         } else {
-          console.error('Failed to like:', data.error);
+          console.error('Vote error:', data.error);
         }
       });
     });
   };
 </script>
+
 
